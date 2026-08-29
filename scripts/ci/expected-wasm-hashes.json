@@ -2,9 +2,9 @@
   "source": "CI cargo build --target wasm32v1-none --release (unoptimized)",
   "note": "These hashes lock the wasm produced by contract-checks, not the stellar-cli optimized hashes stored in infra/stellar/contract-manifest.json.",
   "contracts": {
-    "policies": "3be2bc9ab06119565dc7f00c6f04299546e6e9846b662f4b914a3384e7b036c6",
-    "postage": "e9ce51fb9d58c9851edaf36907283256f2d8f9aa161e7d562eaee2badde8be54",
-    "receipts": "e30ada4c764df85915876838be7e6914d56e99bd1ed6f6279dcaddc55d6b5b92",
-    "lifecycle": "b222b74be25a8b29713033a82f8b8f7726270b889ef3b89bc41f3db586ab0c22"
+    "policies": "b44ecab1c1b10e6a970b39e519e827be24568cac8410626b6321d6aad73585d3",
+    "postage": "a18cf1aabc2aa636210a094e8753fdac3b7421adedf3d4101b4e0cd0e40151eb",
+    "receipts": "aed318b7354d5ab69652b5f629af89668b06d8369a9fe498e37e81976f9d1903",
+    "lifecycle": "330fcfab205f2c69cc68cf4a2a43fc192258efd0bb2cf8e7ce00ca028f522151"
   }
 }
