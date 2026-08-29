@@ -210,7 +210,10 @@ export async function exportFeedbackReports(
 export function buildSubmissionPreview(
   input: FeedbackSubmitInput,
   reporterId: string,
-): Omit<FeedbackReport, "reportId" | "createdAt" | "updatedAt" | "status" | "resolvedBy" | "resolvedAt"> {
+): Omit<
+  FeedbackReport,
+  "reportId" | "createdAt" | "updatedAt" | "status" | "resolvedBy" | "resolvedAt"
+> {
   return {
     category: input.category,
     severity: input.severity,

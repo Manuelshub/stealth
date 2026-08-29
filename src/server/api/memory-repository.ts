@@ -1997,9 +1997,7 @@ export class MemoryApiRepository implements ApiRepository {
   // ---------------------------------------------------------------------------
   private readonly feedbackReports = new Map<string, import("./domain").FeedbackReport>();
 
-  async getFeedbackReport(
-    reportId: string,
-  ): Promise<import("./domain").FeedbackReport | null> {
+  async getFeedbackReport(reportId: string): Promise<import("./domain").FeedbackReport | null> {
     return structuredClone(this.feedbackReports.get(reportId) ?? null);
   }
 

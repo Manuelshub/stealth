@@ -18,10 +18,7 @@ import { getApiContext } from "@/server/api/context";
 import { feedbackSubmitSchema } from "@/server/api/domain";
 import { parseJsonBody } from "@/server/api/request";
 import { apiSuccess, handleApiRequest } from "@/server/api/response";
-import {
-  buildSubmissionPreview,
-  submitFeedbackReport,
-} from "@/server/api/feedback-service";
+import { buildSubmissionPreview, submitFeedbackReport } from "@/server/api/feedback-service";
 
 export const Route = createFileRoute("/api/v1/feedback/")({
   server: {

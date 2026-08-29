@@ -48,7 +48,10 @@ const ADMIN_ADDR = "GADMIN77777777777777777777777777777777777777777777777777";
 const STATUS_BADGES: Record<FeedbackStatus, { label: string; className: string }> = {
   open: { label: "Open", className: "bg-blue-500/10 text-blue-400 border-blue-500/20" },
   triaged: { label: "Triaged", className: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20" },
-  resolved: { label: "Resolved", className: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" },
+  resolved: {
+    label: "Resolved",
+    className: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+  },
   closed: { label: "Closed", className: "bg-neutral-800 text-neutral-500 border-neutral-700" },
   wont_fix: { label: "Won't Fix", className: "bg-neutral-800 text-neutral-500 border-neutral-700" },
 };
@@ -213,7 +216,7 @@ export function FeedbackPanel() {
                   : "border-neutral-800 text-neutral-500 hover:border-neutral-700 hover:text-neutral-300"
               }`}
             >
-              {s === "" ? "All" : STATUS_BADGES[s as FeedbackStatus]?.label ?? s}
+              {s === "" ? "All" : (STATUS_BADGES[s as FeedbackStatus]?.label ?? s)}
             </button>
           ))}
         </div>
@@ -260,12 +263,18 @@ export function FeedbackPanel() {
                         >
                           {badge.label}
                         </span>
-                        <span className={`text-xs font-medium capitalize ${SEVERITY_BADGES[report.severity]}`}>
+                        <span
+                          className={`text-xs font-medium capitalize ${SEVERITY_BADGES[report.severity]}`}
+                        >
                           {report.severity}
                         </span>
-                        <span className="text-xs text-neutral-400 capitalize">{report.category.replace("_", " ")}</span>
+                        <span className="text-xs text-neutral-400 capitalize">
+                          {report.category.replace("_", " ")}
+                        </span>
                       </div>
-                      <p className="text-xs text-neutral-400 mt-0.5 truncate">{report.steps.slice(0, 100)}</p>
+                      <p className="text-xs text-neutral-400 mt-0.5 truncate">
+                        {report.steps.slice(0, 100)}
+                      </p>
                     </div>
                     <div className="text-right shrink-0">
                       <div className="text-[11px] text-neutral-500 font-mono">
@@ -299,7 +308,9 @@ export function FeedbackPanel() {
 
                       <div className="bg-neutral-950 rounded-lg p-3">
                         <div className="text-[11px] text-neutral-500 mb-1">Steps (redacted)</div>
-                        <div className="text-xs text-neutral-300 whitespace-pre-wrap">{report.steps}</div>
+                        <div className="text-xs text-neutral-300 whitespace-pre-wrap">
+                          {report.steps}
+                        </div>
                       </div>
 
                       {report.diagnostics && (

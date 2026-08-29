@@ -24,7 +24,13 @@ import {
   Shield,
 } from "lucide-react";
 
-export type FeedbackCategory = "bug" | "performance" | "ui" | "security" | "feature_request" | "other";
+export type FeedbackCategory =
+  | "bug"
+  | "performance"
+  | "ui"
+  | "security"
+  | "feature_request"
+  | "other";
 export type FeedbackSeverity = "low" | "medium" | "high" | "critical";
 
 interface FeedbackDiagnostics {
@@ -69,7 +75,11 @@ const CATEGORIES: { value: FeedbackCategory; label: string; icon: string }[] = [
 
 const SEVERITIES: { value: FeedbackSeverity; label: string; color: string }[] = [
   { value: "low", label: "Low", color: "text-blue-400 border-blue-500/30 bg-blue-500/10" },
-  { value: "medium", label: "Medium", color: "text-yellow-400 border-yellow-500/30 bg-yellow-500/10" },
+  {
+    value: "medium",
+    label: "Medium",
+    color: "text-yellow-400 border-yellow-500/30 bg-yellow-500/10",
+  },
   { value: "high", label: "High", color: "text-orange-400 border-orange-500/30 bg-orange-500/10" },
   { value: "critical", label: "Critical", color: "text-red-400 border-red-500/30 bg-red-500/10" },
 ];
@@ -207,8 +217,8 @@ export function FeedbackDialog({ onClose, initialRoute }: FeedbackDialogProps) {
         <div className="mx-5 mt-4 px-3 py-2 bg-emerald-500/5 border border-emerald-500/15 rounded-lg flex items-start gap-2">
           <Shield className="size-3.5 text-emerald-400 mt-0.5 shrink-0" />
           <p className="text-[11px] text-emerald-300/80 leading-relaxed">
-            Message content, tokens, and private keys are{" "}
-            <strong>never collected</strong>. Only the metadata you see in the preview is sent.
+            Message content, tokens, and private keys are <strong>never collected</strong>. Only the
+            metadata you see in the preview is sent.
           </p>
         </div>
 
@@ -352,7 +362,10 @@ export function FeedbackDialog({ onClose, initialRoute }: FeedbackDialogProps) {
                 },
                 { label: "Reporter token", value: preview.reporterId },
               ].map(({ label, value }) => (
-                <div key={label} className="rounded-lg bg-neutral-950 border border-neutral-800 p-3">
+                <div
+                  key={label}
+                  className="rounded-lg bg-neutral-950 border border-neutral-800 p-3"
+                >
                   <div className="text-[11px] text-neutral-500 mb-1">{label}</div>
                   <div className="text-xs text-neutral-200 font-mono break-all">{value}</div>
                 </div>

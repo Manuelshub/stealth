@@ -58,15 +58,15 @@ function feedbackBody(overrides: Record<string, unknown> = {}) {
 
 describe("Feedback redaction", () => {
   it("strips Stellar private key (S-address) from steps", () => {
-    const steps =
-      "I pasted my key SCZANGBA4GEHIOWY3MHNHQBV4MHJLIZGQ7DFKZPJM2GRLMEUQKHIUI here";
+    const steps = "I pasted my key SCZANGBA4GEHIOWY3MHNHQBV4MHJLIZGQ7DFKZPJM2GRLMEUQKHIUI here";
     const redacted = redactSecrets(steps);
     expect(redacted).not.toContain("SCZANGBA4GEHIOWY3MHNHQBV4MHJLIZGQ7DFKZPJM2GRLMEUQKHIUI");
     expect(redacted).toContain("[REDACTED]");
   });
 
   it("strips JWT tokens from steps", () => {
-    const steps = "Error: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c3IifQ.XXXXXXXXXXXXXXXXXXXXXXXXXXX occurred";
+    const steps =
+      "Error: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c3IifQ.XXXXXXXXXXXXXXXXXXXXXXXXXXX occurred";
     const redacted = redactSecrets(steps);
     expect(redacted).not.toContain("eyJhbGciOiJIUzI1NiJ9");
     expect(redacted).toContain("[REDACTED]");
@@ -75,7 +75,9 @@ describe("Feedback redaction", () => {
   it("strips long hex strings that could be keys", () => {
     const steps = "hash: a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2 in logs";
     const redacted = redactSecrets(steps);
-    expect(redacted).not.toContain("a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2");
+    expect(redacted).not.toContain(
+      "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
+    );
     expect(redacted).toContain("[REDACTED]");
   });
 
@@ -313,14 +315,11 @@ describe("Admin feedback operations", () => {
   });
 
   it("admin can triage a report", async () => {
-    const req = new Request(
-      `http://localhost/api/v1/admin/feedback/${createdReportId}/triage`,
-      {
-        method: "POST",
-        headers: { "x-stealth-address": ADMIN_ADDR, "content-type": "application/json" },
-        body: JSON.stringify({ triageNotes: "Reproduced locally — assigned to UI team" }),
-      },
-    );
+    const req = new Request(`http://localhost/api/v1/admin/feedback/${createdReportId}/triage`, {
+      method: "POST",
+      headers: { "x-stealth-address": ADMIN_ADDR, "content-type": "application/json" },
+      body: JSON.stringify({ triageNotes: "Reproduced locally — assigned to UI team" }),
+    });
     const res = await triageHandler({ request: req, params: { reportId: createdReportId } });
     expect(res.status).toBe(200);
     const body = (await res.json()) as any;
@@ -329,27 +328,21 @@ describe("Admin feedback operations", () => {
   });
 
   it("rejects triage with notes shorter than 4 chars", async () => {
-    const req = new Request(
-      `http://localhost/api/v1/admin/feedback/${createdReportId}/triage`,
-      {
-        method: "POST",
-        headers: { "x-stealth-address": ADMIN_ADDR, "content-type": "application/json" },
-        body: JSON.stringify({ triageNotes: "ab" }),
-      },
-    );
+    const req = new Request(`http://localhost/api/v1/admin/feedback/${createdReportId}/triage`, {
+      method: "POST",
+      headers: { "x-stealth-address": ADMIN_ADDR, "content-type": "application/json" },
+      body: JSON.stringify({ triageNotes: "ab" }),
+    });
     const res = await triageHandler({ request: req, params: { reportId: createdReportId } });
     expect(res.status).toBe(422);
   });
 
   it("admin can close a report as resolved", async () => {
-    const req = new Request(
-      `http://localhost/api/v1/admin/feedback/${createdReportId}/close`,
-      {
-        method: "POST",
-        headers: { "x-stealth-address": ADMIN_ADDR, "content-type": "application/json" },
-        body: JSON.stringify({ status: "resolved", reason: "Fixed in v1.4.3-beta patch" }),
-      },
-    );
+    const req = new Request(`http://localhost/api/v1/admin/feedback/${createdReportId}/close`, {
+      method: "POST",
+      headers: { "x-stealth-address": ADMIN_ADDR, "content-type": "application/json" },
+      body: JSON.stringify({ status: "resolved", reason: "Fixed in v1.4.3-beta patch" }),
+    });
     const res = await closeHandler({ request: req, params: { reportId: createdReportId } });
     expect(res.status).toBe(200);
     const body = (await res.json()) as any;
@@ -359,14 +352,11 @@ describe("Admin feedback operations", () => {
   });
 
   it("admin can mark a report as wont_fix", async () => {
-    const req = new Request(
-      `http://localhost/api/v1/admin/feedback/${createdReportId}/close`,
-      {
-        method: "POST",
-        headers: { "x-stealth-address": ADMIN_ADDR, "content-type": "application/json" },
-        body: JSON.stringify({ status: "wont_fix", reason: "Working as intended per design spec" }),
-      },
-    );
+    const req = new Request(`http://localhost/api/v1/admin/feedback/${createdReportId}/close`, {
+      method: "POST",
+      headers: { "x-stealth-address": ADMIN_ADDR, "content-type": "application/json" },
+      body: JSON.stringify({ status: "wont_fix", reason: "Working as intended per design spec" }),
+    });
     const res = await closeHandler({ request: req, params: { reportId: createdReportId } });
     expect(res.status).toBe(200);
     const body = (await res.json()) as any;
@@ -374,14 +364,11 @@ describe("Admin feedback operations", () => {
   });
 
   it("rejects close without a reason", async () => {
-    const req = new Request(
-      `http://localhost/api/v1/admin/feedback/${createdReportId}/close`,
-      {
-        method: "POST",
-        headers: { "x-stealth-address": ADMIN_ADDR, "content-type": "application/json" },
-        body: JSON.stringify({ status: "resolved" }),
-      },
-    );
+    const req = new Request(`http://localhost/api/v1/admin/feedback/${createdReportId}/close`, {
+      method: "POST",
+      headers: { "x-stealth-address": ADMIN_ADDR, "content-type": "application/json" },
+      body: JSON.stringify({ status: "resolved" }),
+    });
     const res = await closeHandler({ request: req, params: { reportId: createdReportId } });
     expect(res.status).toBe(422);
   });
