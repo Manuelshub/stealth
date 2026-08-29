@@ -663,6 +663,23 @@ export interface ApiRepository {
   setInvite(invite: Invite): Promise<Invite>;
   listInvites(): Promise<Invite[]>;
 
+  // ---------------------------------------------------------------------------
+  // Issue #2001 (BETA-094) — Beta tester feedback reports
+  // ---------------------------------------------------------------------------
+  getFeedbackReport(reportId: string): Promise<import("./domain").FeedbackReport | null>;
+  createFeedbackReport(
+    report: import("./domain").FeedbackReport,
+  ): Promise<import("./domain").FeedbackReport>;
+  updateFeedbackReport(
+    report: import("./domain").FeedbackReport,
+  ): Promise<import("./domain").FeedbackReport>;
+  listFeedbackReports(filter?: {
+    status?: import("./domain").FeedbackStatus;
+    category?: import("./domain").FeedbackCategory;
+    limit?: number;
+    after?: string;
+  }): Promise<import("./domain").FeedbackReport[]>;
+
   reset?(): void;
 }
 
