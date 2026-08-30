@@ -44,6 +44,10 @@ import type {
   AccountDeletionRequest,
   AccountExport,
   Invite,
+  FeedbackCategory,
+  FeedbackReport,
+  FeedbackStatus,
+  FeedbackSubmitInput,
 } from "./domain";
 import type { ZodSchema } from "zod";
 import { ApiError, DataIntegrityError, RetryExhaustedError } from "./errors";
@@ -1675,6 +1679,29 @@ export class ValidatedApiRepository implements ApiRepository {
     return raw.map((r) => validateRecord<Invite>("invite", r));
   }
 
+  async getFeedbackReport(reportId: string): Promise<FeedbackReport | null> {
+    const raw = await this.inner.getFeedbackReport(reportId);
+    return raw ? validateRecord<FeedbackReport>("feedbackReport", raw) : null;
+  }
+
+  createFeedbackReport(report: FeedbackReport): Promise<FeedbackReport> {
+    return this.inner.createFeedbackReport(versionRecord("feedbackReport", report));
+  }
+
+  updateFeedbackReport(report: FeedbackReport): Promise<FeedbackReport> {
+    return this.inner.updateFeedbackReport(versionRecord("feedbackReport", report));
+  }
+
+  async listFeedbackReports(filter?: {
+    status?: FeedbackStatus;
+    category?: FeedbackCategory;
+    limit?: number;
+    after?: string;
+  }): Promise<FeedbackReport[]> {
+    const raw = await this.inner.listFeedbackReports(filter);
+    return raw.map((r) => validateRecord<FeedbackReport>("feedbackReport", r));
+  }
+
   reset(): void {
     this.inner.reset?.();
   }
@@ -2542,6 +2569,27 @@ export class RetryableApiRepository implements ApiRepository {
 
   listInvites(): Promise<Invite[]> {
     return this.withRetry("listInvites", () => this.inner.listInvites());
+  }
+
+  getFeedbackReport(reportId: string): Promise<FeedbackReport | null> {
+    return this.withRetry("getFeedbackReport", () => this.inner.getFeedbackReport(reportId));
+  }
+
+  createFeedbackReport(report: FeedbackReport): Promise<FeedbackReport> {
+    return this.inner.createFeedbackReport(report);
+  }
+
+  updateFeedbackReport(report: FeedbackReport): Promise<FeedbackReport> {
+    return this.withRetry("updateFeedbackReport", () => this.inner.updateFeedbackReport(report));
+  }
+
+  listFeedbackReports(filter?: {
+    status?: FeedbackStatus;
+    category?: FeedbackCategory;
+    limit?: number;
+    after?: string;
+  }): Promise<FeedbackReport[]> {
+    return this.withRetry("listFeedbackReports", () => this.inner.listFeedbackReports(filter));
   }
 
   reset(): void {

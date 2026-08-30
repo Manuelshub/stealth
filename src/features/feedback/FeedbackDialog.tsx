@@ -24,6 +24,8 @@ import {
   Shield,
 } from "lucide-react";
 
+declare const __APP_VERSION__: string | undefined;
+
 export type FeedbackCategory =
   | "bug"
   | "performance"
